@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+    {% load static %}
     <meta charset="UTF-8">
     <meta name="viewpoint" content="width=device-width, initial-scale=1">
     <title>卒業要件判定サイト</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <style>
         * {
             margin: 0;
@@ -32,9 +34,25 @@
     </style>
 </head>
 <body>
-    <header>卒業要件判定サイト</header>
+    <header>
+        <h1>卒業要件判定サイト</h1>
+        <button class="menu-btn" onclick="toggleMenu()">&#9776;</button> <!-- ハンバーガーメニューアイコン -->
+        <nav id="nav-menu" class="hidden">
+            <ul>
+                <li><a href="{% url 'home' %}">ホーム</a></li>
+                {% if user.is_authenticated %}
+                    <li>こんにちは、{{ user.username }}さん</li>
+                    <li><a href="{% url 'logout' %}">ログアウト</a></li>
+                {% else %}
+                    <li><a href="{% url 'signup' %}">アカウント登録</a></li>
+                    <li><a href="{% url 'login' %}">ログイン</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
     <main>
         {% block content %}{% endblock %}
     </main>
+    <script src="{% static 'js/script.js' %}"></script>
 </body>
 </html>

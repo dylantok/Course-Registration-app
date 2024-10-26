@@ -126,3 +126,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+
+# settings.py
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / "static"]
+
+# settings.py
+CSRF_COOKIE_HTTPONLY = True  # CSRF Cookieの安全性を高める
+SESSION_COOKIE_SAMESITE = 'Lax'  # サードパーティーCookie問題がある場合の対策

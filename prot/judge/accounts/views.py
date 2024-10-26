@@ -3,6 +3,10 @@ from django.contrib.auth import login
 from .forms import SignUpForm
 from django.urls import reverse
 
+
+def home(request):
+    return render(request, 'home.html')
+    
 def signup(request):
     if request.method == "POST":
         form = SignUpForm(request.POST)
