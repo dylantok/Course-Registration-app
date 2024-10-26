@@ -12,4 +12,73 @@
 
 <p>すでにアカウントをお持ちですか？ <a href="{% url 'login' %}">ログイン</a></p>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const courseSelect = document.getElementById("id_course");
+        const undergraduateSelect = document.getElementById("id_undergraduate");
+        const schoolYearSelect = document.getElementById("id_school_year");
+
+        // 学部ごとのコース選択肢
+        const coursesByUndergraduate = {
+            "management": [
+                {value: "business_management", text: "ビジネスマネジメント"},
+                {value: "finance", text: "ファイナンス"}
+            ],
+            "commerce": [
+                {value: "accounting", text: "会計学"},
+                {value: "marketing", text: "マーケティング"}
+            ],
+            "human_sciences": [
+                {value: "psychology", text: "心理学"},
+                {value: "sociology", text: "社会学"}
+            ]
+        };
+
+        // 学部選択が変更されたときにコース選択肢を更新
+        undergraduateSelect.addEventListener("change", function () {
+            updateCourseOptions();
+        });
+
+        // 学年が「1年」の場合、コース選択を非表示にする
+        schoolYearSelect.addEventListener("change", function () {
+            toggleCourseVisibility();
+        });
+
+        // コースの表示/非表示を切り替える関数
+        function toggleCourseVisibility() {
+            if (schoolYearSelect.value === "1") {
+                courseSelect.parentElement.style.display = "none";  // コース選択肢を非表示
+            } else {
+                courseSelect.parentElement.style.display = "";  // コース選択肢を表示
+            }
+        }
+
+        // コース選択肢を更新する関数
+        function updateCourseOptions() {
+            // コースの選択肢をリセット
+            courseSelect.innerHTML = "";
+
+            // 選択された学部に基づいて新しいコースの選択肢を追加
+            const selectedUndergraduate = undergraduateSelect.value;
+            const courses = coursesByUndergraduate[selectedUndergraduate] || [];
+            courses.forEach(function (course) {
+                const option = document.createElement("option");
+                option.value = course.value;
+                option.text = course.text;
+                courseSelect.appendChild(option);
+            });
+
+            // 1番目の選択肢をデフォルトとして選択
+            if (courseSelect.options.length > 0) {
+                courseSelect.selectedIndex = 0;
+            }
+        }
+
+        // 初期設定
+        undergraduateSelect.dispatchEvent(new Event("change"));
+        toggleCourseVisibility();
+    });
+</script>
+
+
 {% endblock %}
