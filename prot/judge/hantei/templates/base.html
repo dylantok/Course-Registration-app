@@ -42,6 +42,7 @@
                 <li><a href="{% url 'home' %}">ホーム</a></li>
                 {% if user.is_authenticated %}
                     <li>こんにちは、{{ user.username }}さん</li>
+                    <li><a href="{% url 'profile' %}">プロフィール</a></li>
                     <li><a href="{% url 'logout' %}">ログアウト</a></li>
                 {% else %}
                     <li><a href="{% url 'signup' %}">アカウント登録</a></li>

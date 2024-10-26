@@ -25,6 +25,7 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('signup/', accounts_views.signup, name='signup'),
     path('', accounts_views.home, name='home'),
+    path('profile/', accounts_views.profile, name='profile'),  # プロフィールページのURL
 
     # パスワードリセットのURLパターン
     path('password_reset/', auth_views.PasswordResetView.as_view(template_name='registration/password_reset_custom.html'), name='password_reset'),
