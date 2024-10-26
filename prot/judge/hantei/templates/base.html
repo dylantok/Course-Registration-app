@@ -43,7 +43,10 @@
                 {% if user.is_authenticated %}
                     <li>こんにちは、{{ user.username }}さん</li>
                     <li><a href="{% url 'profile' %}">プロフィール</a></li>
-                    <li><a href="{% url 'logout' %}">ログアウト</a></li>
+                    <form method="post" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button type="submit">ログアウト</button>
+                    </form>
                 {% else %}
                     <li><a href="{% url 'signup' %}">アカウント登録</a></li>
                     <li><a href="{% url 'login' %}">ログイン</a></li>
