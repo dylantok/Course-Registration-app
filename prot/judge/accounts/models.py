@@ -17,9 +17,16 @@ class Profile(models.Model):
     ]
 
     COURSE_CHOICES = [
-        ('management', '経営学部'),
-        ('commerce', '商学部'),
-        ('human_sciences', '人間科学部')
+        ('corporate_management', '企業経営'),
+        ('management_law', '経営法務'),
+        ('Entrepreneurship_and_Business_Succession', '起業・事業承継'),
+        ('information', '情報'),
+        ('finance', '金融'),
+        ('accounting', '会計'),
+        ('marketing', 'マーケティング'),
+        ('psychology', '人間科学専攻（心理・コミュニケーションコース）'),
+        ('sociology', '人間科学専攻（社会・ライフデザインコース）'),
+        ('Child_Education', '児童教育専攻')
     ]
     ENGLISH_CLASS_CHOICES = [
         ('A', 'A'),
@@ -41,7 +48,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     school_year = models.CharField(max_length=1, choices=SCHOOL_YEAR_CHOICES)
     undergraduate = models.CharField(max_length=20, choices=UNDERGRADUATE_CHOICES)
-    course = models.CharField(max_length=20, choices=COURSE_CHOICES)
+    course = models.CharField(max_length=40, choices=COURSE_CHOICES)
     english_class = models.CharField(max_length=20, choices=ENGLISH_CLASS_CHOICES)
     repeating_a_course = models.CharField(max_length=20, choices=REPEATING_A_COURSE_CHOICE)
     First_and_second_terms_semester = models.CharField(max_length=20, choices=FIRST_AND_SECOND_TERMS_SEMESTER_CHOICE)

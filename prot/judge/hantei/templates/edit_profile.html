@@ -1,17 +1,16 @@
 {% extends 'base.html' %}
 
-{% block title %}アカウント登録{% endblock %}
+{% block title %}プロフィール編集{% endblock %}
 
 {% block content %}
-<h2>アカウント登録</h2>
+<h2>プロフィール編集</h2>
 <form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">登録</button>
+    {% csrf_token %}
+    {{ form.as_p }}
+    {{ profile_form.as_p }}
+    <button type="submit" class="btn btn-primary">保存</button>
 </form>
-
-<p>すでにアカウントをお持ちですか？ <a href="{% url 'login' %}">ログイン</a></p>
-
+<a href="{% url 'profile' %}">キャンセル</a>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const courseSelect = document.getElementById("id_course");
@@ -21,20 +20,20 @@
         // 学部ごとのコース選択肢
         const coursesByUndergraduate = {
             "management": [
-                {value: "corporate_management", text: "企業経営"},
-                {value: "management_law", text: "経営法務"},
-                {value: "Entrepreneurship_and_Business_Succession", text: "起業・事業承継"},
-                {value: "information", text: "情報"}
-            ],
-            "commerce": [
-                {value: "finance", text: "金融"},
-                {value: "accounting", text: "会計"},
-                {value: "marketing", text: "マーケティング"}
-            ],
-            "human_sciences": [
-                {value: "psychology", text: "人間科学専攻（心理・コミュニケーションコース）"},
-                {value: "sociology", text: "人間科学専攻（社会・ライフデザインコース）"},
-                {value: "Child_Education", text: "児童教育専攻"}
+            {value: "corporate_management", text: "企業経営"},
+            {value: "management_law", text: "経営法務"},
+            {value: "Entrepreneurship_and_Business_Succession", text: "起業・事業承継"},
+            {value: "information", text: "情報"}
+        ],
+        "commerce": [
+            {value: "finance", text: "金融"},
+            {value: "accounting", text: "会計"},
+            {value: "marketing", text: "マーケティング"}
+        ],
+        "human_sciences": [
+            {value: "psychology", text: "人間科学専攻（心理・コミュニケーションコース）"},
+            {value: "sociology", text: "人間科学専攻（社会・ライフデザインコース）"},
+            {value: "Child_Education", text: "児童教育専攻"}
             ]
         };
 
@@ -83,6 +82,7 @@
         toggleCourseVisibility();
     });
 </script>
+
 
 
 {% endblock %}

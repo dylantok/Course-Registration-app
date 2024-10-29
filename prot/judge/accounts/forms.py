@@ -2,6 +2,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
 from django.utils.translation import gettext_lazy as _
+from .models import Profile
 
 
 class SignUpForm(UserCreationForm):#Django標準の登録フォーム
@@ -34,10 +35,22 @@ class SignUpForm(UserCreationForm):#Django標準の登録フォーム
         label=_("学部"),
         initial='management'
     )
-
+    course_choices = [
+        ('', '---------'),  # デフォルトの空選択肢
+        ('corporate_management', '企業経営'),
+        ('management_law', '経営法務'),
+        ('Entrepreneurship_and_Business_Succession', '起業・事業承継'),
+        ('information', '情報'),
+        ('finance', '金融'),
+        ('accounting', '会計'),
+        ('marketing', 'マーケティング'),
+        ('psychology', '人間科学専攻（心理・コミュニケーションコース）'),
+        ('sociology', '人間科学専攻（社会・ライフデザインコース）'),
+        ('Child_Education', '児童教育専攻')
+    ]
     course = forms.ChoiceField(
-        choices=[],  # JavaScriptで動的に設定するためデフォルトは空
-        required=True,
+        choices=course_choices,  # JavaScriptで動的に設定するためデフォルトは空
+        required=False,
         label=_("コース"),
     )
     english_class_choice = [
@@ -108,3 +121,26 @@ def save(self, commit=True):
             Seminar_membership=self.cleaned_data['Seminar_membership']
         )
         return user
+
+class EditProfileForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['username', 'email']
+        labels = {
+            'username': "ユーザー名",
+            'email': "メールアドレス",
+        }
+
+class EditProfileExtraForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['school_year', 'undergraduate', 'course','english_class','repeating_a_course','First_and_second_terms_semester','Seminar_membership']
+        labels = {
+            'school_year': "学年",
+            'undergraduate': "学部",
+            'course': "コース",
+            'english_class': "英語クラス",
+            'repeating_a_course': "再履修",
+            'First_and_second_terms_semester':  "前期・後期",
+            'Seminar_membership': "ゼミ加入の有無"
+        }

@@ -5,4 +5,13 @@
 {% block content %}
 <h2>プロフィールページ</h2>
 <p>ようこそ、{{ user.username }}さん！</p>
+<p>メールアドレス: {{ user.email }}</p>
+<p>学年: {{ user.profile.get_school_year_display }}</p>
+<p>学部: {{ user.profile.get_undergraduate_display }}</p>
+<p>英語クラス: {{ user.profile.get_english_class_display }}</p>
+<p>再履修: {{ user.profile.get_repeating_a_course_display }}</p>
+<p>前期・後期: {{ user.profile.get_First_and_second_terms_semester_display }}</p>
+<p>ゼミ加入の有無: {{ user.profile.get_Seminar_membership_display }}</p>
+
+<a href="{% url 'edit_profile' %}" class="btn btn-primary">編集</a>  <!-- 編集ボタン -->
 {% endblock %}
