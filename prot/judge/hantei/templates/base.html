@@ -43,6 +43,7 @@
                 {% if user.is_authenticated %}
                     <li>こんにちは、{{ user.username }}さん</li>
                     <li><a href="{% url 'profile' %}">プロフィール</a></li>
+                    <li><a href="{% url 'hantei:subject_list' %}">履修登録</a></li>
                     <form method="post" action="{% url 'logout' %}">
                         {% csrf_token %}
                         <button type="submit">ログアウト</button>
