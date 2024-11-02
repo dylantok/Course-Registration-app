@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
-from .models import AcquiredCredits, SubjectTable # SubjectTbaleを.formsからインポートしていたので修正(10/30/23)
+from .models import AcquiredCredits, SubjectTable, UserAcquiredCredits
 from .forms import AcquiredSubjectForm
+from django.contrib.auth.models import User
+
 
 # Create your views here.
 
@@ -11,7 +13,10 @@ def subject_list(request):
     # 修正時（取得済みの一時データがある場合）はsessionデータを保持
     if 'selected_subjects' in request.session:
         selected_subjects = request.session['selected_subjects']
-    
+
+        acquired_subject_ids = AcquiredCredits.objects.values_list('subject_id', flat=True)
+        initial_selected_subjects = list(set(selected_subjects) | set(acquired_subject_ids))
+
     # データ取得時の処理    
     if request.method == 'POST':
         form = AcquiredSubjectForm(request.POST)
@@ -36,10 +41,22 @@ def confirm_subjects(request):
                 if 'selected_subjects' in request.session:
                     subjects = SubjectTable.objects.filter(id__in=request.session['selected_subjects'])
                     # プロトタイプでは格納データは再利用しないので既存データを削除
-                    AcquiredCredits.objects.all().delete()
+                    
                     # 科目を取得済み科目テーブルに登録
                     for subject in subjects:
-                        AcquiredCredits(subject=subject).save()
+                        # 重複チェック: すでに存在する場合は新たに作成しない
+                        if not AcquiredCredits.objects.filter(subject_id=subject.id).exists():
+                            acquired_credit = AcquiredCredits(subject=subject)  # インスタンスを作成
+                            acquired_credit.save()  # インスタンスを保存
+                        else:
+                            # 既存のインスタンスを取得（重複している場合）
+                            acquired_credit = AcquiredCredits.objects.get(subject_id=subject.id)
+
+                        # UserAcquiredCreditsの重複チェック
+                        if not UserAcquiredCredits.objects.filter(user=request.user, acquired_credit=acquired_credit).exists():
+                            UserAcquiredCredits(user=request.user, acquired_credit=acquired_credit).save()
+
+
                     # 確認のための一時データを削除
                     del request.session['selected_subjects']                   
                     return redirect('hantei:judgement') # 判定画面にリダイレクト

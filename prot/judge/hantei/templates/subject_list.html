@@ -4,8 +4,16 @@
     <h1>単位取得済み科目の登録</h1>
     <form method="post">
         {% csrf_token %}
-        {{ form.subjects.label_tag }}
-        {{ form.subjects }}
+        <div>
+            {{ form.subjects.label_tag }}
+            {% for field in form.subjects %}
+                <div>
+                    <label>
+                        {{ field.tag }} {{ field.choice_label }}
+                    </label>
+                </div>
+            {% endfor %}
+        </div>
         <button type="submit">判定</button>
     </form>
-{% endblock %} 
+{% endblock %}
